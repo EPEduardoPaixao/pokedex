@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import pokeapi from '../services/pokeapi'
+import React, { useEffect, useState } from "react";
+import pokeapi from "../services/pokeapi";
+
 // import { Container } from './styles';
 
 // interface IPokemon [{
@@ -9,43 +10,55 @@ import pokeapi from '../services/pokeapi'
 // }]
 
 const Pokedex: React.FC = () => {
+  const [pokemon, setPokemon] = useState(
+    [],
+  );
 
-    const [pokemon, setPokemon] = useState([{
-        name: '',
-        url: '',
-    }])
+  useEffect(() => {
+      let i =0
+    const getPokemon = async (id:number) => {
+      try {
+        const { data } = await pokeapi.get(`pokemon/${id}`);
 
-    useEffect(() => {
-        const getPokemon = async () => {
+        setPokemon(data.name);
+        console.log("pokemons", pokemon);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    for (i = 1; i < 150; i++) {
+        // const element = array[index];
+        
+        getPokemon(i);
+        console.log('i',i)
+    }
+    // getPokemon()
+  }, []);
 
-            try {
-                const { data } = await pokeapi.get(`pokemon?limit=151`);
+  return (
+    <div>
+      <h1>Pokedex</h1>
+      <div style={{display:'flex', justifyContent: 'center'}}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            padding: 10,
+            maxWidth: "50%",
+            justifyContent: "center",
+          }}
+        >
+          {pokemon!==undefined?(
 
-                setPokemon(data.results)
-                console.log('pokemons', pokemon)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-
-        getPokemon()
-    }, [])
-
-    return (
-        <div>
-            <h1>
-                Pokedex
-            </h1>
-            <div style={{ flex: 1, display: 'flex', gridTemplateColumns: '1fr 1fr 1fr', gap: '2rem', alignContent: 'center' }}>
-                {pokemon.map(pokemons => (
-                    <div >
-
-                        {pokemons.name}
-                    </div>
-                ))}
-            </div>
+              pokemon.map((pokemons:any) => (
+                  <div style={{ padding: 10 }}>{pokemons.name}</div>
+                  ))
+                  ):(null)
+                }
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};
 
 export default Pokedex;
