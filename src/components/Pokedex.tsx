@@ -1,37 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { PokemonContext } from "../contexts/PokeContext";
 import pokeapi from "../services/pokeapi";
+import PokeCard from "./PokeCard";
 
 // import { Container } from './styles';
 
-interface IPokemon {
-  id: number;
-  name: string;
-  // photo: string;
+interface IPokemon{
+  id:number;
+  name:string;
+  photo:string;
 }
 
 const Pokedex: React.FC = () => {
-  const [pokemon, setPokemon] = useState<IPokemon[]>([]);
-  // const [pokemon, setPokemon] = useState([{}]);
+const {pokeId, pokeName, pokePhoto} = useContext(PokemonContext)
+const [pokemon, setPokemon] = useState<IPokemon[]>([])
 
-  useEffect(() => {
-    let i = 0;
-    const getPokemon = async (id: number) => {
-      try {
-        const { data } = await pokeapi.get(`pokemon/${id}`);
-
-        // setPokemon([{ ...pokemon, name: data.name, id: data.id, photo: data.sprites.front_default}]);
-        setPokemon([data]);
-        // console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    for (i = 1; i < 152; i++) {
-      getPokemon(i);
-      // console.log("i", i);
-    }
-  }, []);
-  // console.log(pokemon);
+useEffect(() => {
+  let i = 0;
+  const getPokemon = async (id: any) => {
+    try {
+      const { data } = await pokeapi.get(`pokemon/${id}`);
+      // setPokemon({...pokemon, id:data.id, photo:data.sprites.front_default, name:data.name});
+    } catch (error) {}
+  };
+  for (i = 1; i < 150; i++) {
+    getPokemon(i);
+  //   console.log(i)
+  }
+}, []);
 
   return (
     <div>
@@ -46,13 +42,14 @@ const Pokedex: React.FC = () => {
             justifyContent: "center",
           }}
         >
-          {pokemon.map((pokemons) => (
-            <div>
-              <strong>{pokemons.name}</strong>
-              {/* <img src={pokemons.photo} alt={pokemons.name} /> */}
-              {console.log(pokemon)}
-            </div>
-          ))}
+          {pokemon.map(pokemons=>(
+
+            <PokeCard
+            id={pokemons.id}
+            name={pokemons.name}
+            photo={pokemons.photo}
+            />
+            ))}
         </div>
       </div>
     </div>
