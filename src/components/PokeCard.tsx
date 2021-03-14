@@ -6,20 +6,20 @@ import { PokemonContext } from '../contexts/PokeContext';
 interface IPokeCard{
     id:number;
     name:string;
-    photo:string;
+    // photo:string;
 }
 // const{pokeId, pokeName,pokePhoto} = useContext(PokemonContext)
 
 const PokeCard: React.FC<IPokeCard> = ({
     id,
     name,
-    photo
+    // photo
 }) => {
 
   return (
     <div>
         <strong>{name}</strong>
-        <img src={photo} alt={name}/>
+        {/* <img src={photo} alt={name}/> */}
 
     </div>
     );

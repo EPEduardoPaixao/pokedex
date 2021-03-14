@@ -5,29 +5,35 @@ import PokeCard from "./PokeCard";
 
 // import { Container } from './styles';
 
-interface IPokemon{
-  id:number;
-  name:string;
-  photo:string;
+interface IPokemon {
+  // id: number;
+  name: string;
+  sprites:{
+    front_default:string;
+  }
 }
 
 const Pokedex: React.FC = () => {
-const {pokeId, pokeName, pokePhoto} = useContext(PokemonContext)
-const [pokemon, setPokemon] = useState<IPokemon[]>([])
+  const { pokeId, pokeName, pokePhoto } = useContext(PokemonContext);
+  const [pokemon, setPokemon] = useState<IPokemon[]>([]);
 
-useEffect(() => {
-  let i = 0;
-  const getPokemon = async (id: any) => {
-    try {
-      const { data } = await pokeapi.get(`pokemon/${id}`);
-      // setPokemon({...pokemon, id:data.id, photo:data.sprites.front_default, name:data.name});
-    } catch (error) {}
-  };
-  for (i = 1; i < 150; i++) {
-    getPokemon(i);
-  //   console.log(i)
-  }
-}, []);
+  useEffect(() => {
+    let i = 0;
+    const getPokemon = async (id:any) => {
+      try {
+        const { data } = await pokeapi.get(`pokemon/${id}`);
+        setPokemon(data);
+        console.log(data)
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    for (i = 1; i < 150; i++) {
+      getPokemon(i);
+      //   console.log(i)
+    }
+    // getPokemon()
+  }, []);
 
   return (
     <div>
@@ -42,14 +48,12 @@ useEffect(() => {
             justifyContent: "center",
           }}
         >
-          {pokemon.map(pokemons=>(
-
-            <PokeCard
-            id={pokemons.id}
-            name={pokemons.name}
-            photo={pokemons.photo}
-            />
-            ))}
+          {pokemon.map((pokemons) => (
+            <div>
+              <strong>{pokemons.name}</strong>
+              {/* <img src={photo} alt={name}/> */}
+            </div>
+          ))}
         </div>
       </div>
     </div>
