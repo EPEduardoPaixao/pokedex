@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { PokemonContext } from '../contexts/PokeContext';
+import pokeapi from '../services/pokeapi';
 
 // import { Container } from './styles';
 
@@ -15,6 +16,17 @@ const PokeCard: React.FC<IPokeCard> = ({
     name,
     // photo
 }) => {
+
+    // useEffect(() => {
+    //     let i = 0;
+    //     const getPokemon = async (name: any) => {
+    //       try {
+    //         const { data } = await pokeapi.get(`pokemon/${name}`);
+    //         setPokeName(data.name);
+
+    //       } catch (error) {}
+    //     };
+    //   }, []);
 
   return (
     <div>

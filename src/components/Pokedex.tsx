@@ -6,34 +6,45 @@ import PokeCard from "./PokeCard";
 // import { Container } from './styles';
 
 interface IPokemon {
-  // id: number;
   name: string;
-  sprites:{
-    front_default:string;
-  }
+  sprites: {
+    front_default: string;
+  };
 }
 
 const Pokedex: React.FC = () => {
-  const { pokeId, pokeName, pokePhoto } = useContext(PokemonContext);
-  const [pokemon, setPokemon] = useState<IPokemon[]>([]);
+  const [pokemon, setPokemon] = useState<IPokemon[]>([
+    {
+      name: "",
+      sprites: {
+        front_default: "",
+      },
+    },
+  ]);
+
+  function addNewTask(pokemon:any) {
+    const itensCopy:any = Array.from(pokemon);
+    itensCopy.push({id: pokemon.length, value: pokemon});
+    setPokemon(itensCopy);
+  }
 
   useEffect(() => {
-    let i = 0;
-    const getPokemon = async (id:any) => {
+    const getPokemon = async (id: any) => {
       try {
         const { data } = await pokeapi.get(`pokemon/${id}`);
-        setPokemon(data);
-        console.log(data)
+        setPokemon([data]);
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
     };
-    for (i = 1; i < 150; i++) {
+    for (let i = 0; i < 150; i++) {
       getPokemon(i);
-      //   console.log(i)
+      addNewTask(pokemon)
     }
-    // getPokemon()
   }, []);
+
+
 
   return (
     <div>
@@ -48,10 +59,12 @@ const Pokedex: React.FC = () => {
             justifyContent: "center",
           }}
         >
-          {pokemon.map((pokemons) => (
+          {pokemon.map((pokemons, index) => (
             <div>
-              <strong>{pokemons.name}</strong>
-              {/* <img src={photo} alt={name}/> */}
+              <div style={{ padding: 10 }} key={index}>
+                <strong>{pokemons.name}</strong>
+                {/* <img src={pokemons.sprites.front_default} alt={pokemons.name} /> */}
+              </div>
             </div>
           ))}
         </div>
