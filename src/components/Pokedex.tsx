@@ -22,30 +22,32 @@ const Pokedex: React.FC = () => {
     },
   ]);
 
-  function addNewTask(pokemon:any) {
-    const itensCopy:any = Array.from(pokemon);
-    itensCopy.push({id: pokemon.length, value: pokemon});
-    setPokemon(itensCopy);
-  }
-
+  let pokelist:any = [{
+    name: "",
+      sprites: {
+        front_default: "",
+      },
+  }]
+  const getPokemon = async (id: any) => {
+    try {
+      const { data } = await pokeapi.get(`pokemon/${id}`);
+      // setPokemon([{...pokemon, name:data.name, sprites:data.sprites}]);
+      pokelist.concat({...pokelist, name:data.name, sprites:data.sprites})
+      // console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   useEffect(() => {
-    const getPokemon = async (id: any) => {
-      try {
-        const { data } = await pokeapi.get(`pokemon/${id}`);
-        setPokemon([data]);
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    for (let i = 0; i < 150; i++) {
+    
+    for (let i = 1; i < 150; i++) {
       getPokemon(i);
-      addNewTask(pokemon)
     }
   }, []);
-
-
-
+  console.log(pokelist)
+  
+  
   return (
     <div>
       <h1>Pokedex</h1>
