@@ -2,7 +2,7 @@ import React from "react";
 import Pokedex from "./components/Pokedex";
 import { ContextsProvider } from "./contexts/PokeContext";
 // import logo from './logo.svg';
-// import './App.css';
+// import './styles/gobal.css';
 
 function App() {
   return (

@@ -1,67 +1,62 @@
 import React, { useContext, useEffect, useState } from "react";
-import { PokemonContext } from "../contexts/PokeContext";
 import pokeapi from "../services/pokeapi";
-import PokeCard from "./PokeCard";
 
-// import { Container } from './styles';
-
+import "../styles/global.css";
 interface IPokemon {
   name: string;
-  photo:string;
+  id: string;
 }
 
 const Pokedex: React.FC = () => {
-  const [pokemon, setPokemon] = useState<IPokemon[]>([
-    // {
-    //   name: "",
-    //   sprites: {
-    //     front_default: "",
-    //   },
-    // },
-  ]);
-  useEffect(() => {
-    for (let i = 1; i < 150; i++) {
-      getPokemon(i);
-    }
-  }, []);
-  const getPokemon = async (id: any) => {
-    try {
-      const { data } = await pokeapi.get(`pokemon/${id}`);
-      setPokemon([{...pokemon, name:data.name, photo:data.sprites.front_default}]);
-      // console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-  let pokelist:any = [{
-    name:'',
-    photo:''
-  }]
-  pokelist = pokelist.concat(pokemon)
-  console.log(pokelist)
+  const [pokemon, setPokemon] = useState<IPokemon[]>([]);
 
-  
-  
+  useEffect(() => {
+    const getPokemon = async () => {
+      try {
+        const { data } = await pokeapi.get(`pokemon?limit=151`);
+        setPokemon(data.results);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getPokemon();
+  }, []);
+
   return (
     <div>
-      <h1>Pokedex</h1>
+      <h1 style={{ textAlign: "center" }}>Pokedex</h1>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div
           style={{
             display: "flex",
             flexWrap: "wrap",
             padding: 10,
-            maxWidth: "50%",
+            maxWidth: "75%",
             justifyContent: "center",
-          }} 
+          }}
         >
-          {pokelist.map((pokemons:any, index:any) => (
-            <div>
-              <div style={{ padding: 10 }} key={index}>
-                <strong>{pokemons.name}</strong>
-                {/* <img src={pokemons.sprites.front_default} alt={pokemons.name} /> */}
-              </div>
+          {pokemon.map((pokemons, index) => (
+            <div
+              style={{
+                margin: 10,
+                padding: 10,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                backgroundColor: "#fff",
+                borderRadius: 8,
+                boxShadow: '0 0 10px #bbb'
+              }}
+            >
+              <img
+                src={`https://pokeres.bastionbot.org/images/pokemon/${
+                  index + 1
+                }.png`}
+                alt={pokemons.name}
+                style={{ maxWidth:150 }}
+              />
+              <strong>{pokemons.name}</strong>
             </div>
           ))}
         </div>
