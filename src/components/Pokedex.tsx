@@ -4,24 +4,49 @@ import pokeapi from "../services/pokeapi";
 import "../styles/global.css";
 interface IPokemon {
   name: string;
-  id: string;
+  // id: string;
+}
+
+interface IMovesEndTypes {
+  move: {
+    name: string;
+  };
 }
 
 const Pokedex: React.FC = () => {
   const [pokemon, setPokemon] = useState<IPokemon[]>([]);
+  const [pokeName, setPokeName] = useState("");
+  const [moves, setMoves] = useState<IMovesEndTypes[]>([]);
+  const [modal, setModal] = useState("none");
 
   useEffect(() => {
     const getPokemon = async () => {
       try {
         const { data } = await pokeapi.get(`pokemon?limit=151`);
         setPokemon(data.results);
-        console.log(data);
+        // console.log(data.results);
       } catch (error) {
         console.log(error);
       }
     };
     getPokemon();
   }, []);
+
+  const getMovesEndType = async (name: any) => {
+    try {
+      const { data } = await pokeapi.get(`pokemon/${name}`);
+      setMoves(data.moves);
+      setPokeName(name);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(
+    "moves",
+    moves.map((move) => move.move.name)
+  );
+  // console.log("poke", pokemon);
 
   return (
     <div>
@@ -37,28 +62,72 @@ const Pokedex: React.FC = () => {
           }}
         >
           {pokemon.map((pokemons, index) => (
+            // colocar um onclick para chamar uma função que vai fazer um novo get e exibir um modal com as informações sobre os pokemons
             <div
               style={{
                 margin: 10,
                 padding: 10,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
                 backgroundColor: "#fff",
                 borderRadius: 8,
-                boxShadow: '0 0 10px #bbb'
+                boxShadow: "0 0 10px #bbb",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                getMovesEndType(pokemons.name);
+                setModal("flex");
               }}
             >
-              <img
-                src={`https://pokeres.bastionbot.org/images/pokemon/${
-                  index + 1
-                }.png`}
-                alt={pokemons.name}
-                style={{ maxWidth:150 }}
-              />
-              <strong>{pokemons.name}</strong>
+              <strong style={{ color: "#999" }}>#{index + 1}</strong>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  src={`https://pokeres.bastionbot.org/images/pokemon/${
+                    index + 1
+                  }.png`}
+                  alt={pokemons.name}
+                  style={{ maxWidth: 150 }}
+                />
+                <strong>{pokemons.name}</strong>
+              </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* --------------Modal------------- */}
+      <div
+        style={{
+          display: modal,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0,0,0,0.7)",
+          position: "fixed",
+          top: 0,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onClick={() => setModal("none")}
+      >
+        <div
+          style={{
+            backgroundColor: "#fff",
+            position: "relative",
+            zIndex: 1,
+            padding: "2.4rem",
+            borderRadius: 8,
+          }}
+        >
+          {moves.map(moves => {
+            <div>
+              <strong>{pokeName}</strong>
+              <h1>{moves.move.name}</h1>;
+            </div>;
+          })}
         </div>
       </div>
     </div>
