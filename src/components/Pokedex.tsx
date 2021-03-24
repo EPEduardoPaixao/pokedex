@@ -7,16 +7,32 @@ interface IPokemon {
   // id: string;
 }
 
-interface IMovesEndTypes {
+interface IMoves {
   move: {
     name: string;
   };
 }
+interface ITypes {
+  type: {
+    name: string;
+  };
+}
 
+// interface IMoveTypes{
+//   move: {
+//     name: string;
+//   },
+//   type: {
+//     name: string;
+//   },
+// }
 const Pokedex: React.FC = () => {
   const [pokemon, setPokemon] = useState<IPokemon[]>([]);
   const [pokeName, setPokeName] = useState("");
-  const [moves, setMoves] = useState<IMovesEndTypes[]>([]);
+  const [moves, setMoves] = useState<IMoves[]>([]);
+  const [types, setTypes] = useState<ITypes[]>([]);
+  // const [moveTypes, setMoveTypes] = useState<IMoveTypes[]>([]);
+
   const [modal, setModal] = useState("none");
 
   useEffect(() => {
@@ -35,7 +51,9 @@ const Pokedex: React.FC = () => {
   const getMovesEndType = async (name: any) => {
     try {
       const { data } = await pokeapi.get(`pokemon/${name}`);
+      // setMoveTypes([{...moveTypes, move: data.moves.move, type:data.types}]);
       setMoves(data.moves);
+      setTypes(data.types);
       setPokeName(name);
     } catch (error) {
       console.log(error);
@@ -44,9 +62,13 @@ const Pokedex: React.FC = () => {
 
   console.log(
     "moves",
-    moves.map((move) => move.move.name)
+    moves.map((move: any) => move.move.name)
   );
-  // console.log("poke", pokemon);
+  console.log(
+    "types",
+    types.map((type: any) => type.type.name)
+  );
+  // console.log("movetypes", moveTypes.map((type:any, moves:any) => (type.type.name, moves.move.name)));
 
   return (
     <div>
@@ -118,16 +140,34 @@ const Pokedex: React.FC = () => {
             backgroundColor: "#fff",
             position: "relative",
             zIndex: 1,
-            padding: "2.4rem",
+            padding: "2rem",
             borderRadius: 8,
+            height: "40%",
+            width: "30%",
+            textAlign: "center",
           }}
         >
-          {moves.map(moves => {
-            <div>
-              <strong>{pokeName}</strong>
-              <h1>{moves.move.name}</h1>;
-            </div>;
-          })}
+          <strong>{pokeName}</strong>
+
+          <div style={{ display: "flex", justifyContent: "space-around", paddingTop:20 }}>
+            <div
+              style={{
+                overflow: "auto",
+                height: "18rem",
+                width:'10rem',
+                textAlign: "start",
+              }}
+            >
+              {moves.map((move) => (
+                <p style={{paddingTop:10}}>{move.move.name}</p>
+              ))}
+            </div>
+            <div style={{display: "flex"}}>
+              {types.map((type) => (
+                <p style={{paddingLeft:10}}>{type.type.name}</p>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
