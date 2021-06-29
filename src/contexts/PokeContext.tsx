@@ -4,7 +4,7 @@ import pokeapi from "../services/pokeapi";
 
 interface IPokemon {
   pokeName: string;
-  // pokeId: number;
+  pokeId: number;
   // pokePhoto: string;
 }
 interface contextsProviderProps {
@@ -16,8 +16,8 @@ export const PokemonContext = createContext({} as IPokemon);
 
 export function ContextsProvider({ children }: contextsProviderProps) {
     const [pokeName, setPokeName] = useState('');
-    // const [pokeId, setPokeId] = useState(0);
-    // const [pokePhoto, setPokePhoto] = useState('');
+    const [pokeId, setPokeId] = useState(0);
+    const [pokePhoto, setPokePhoto] = useState('');
     
   useEffect(() => {
     let i = 0;
@@ -38,7 +38,7 @@ export function ContextsProvider({ children }: contextsProviderProps) {
   }, []);
 
   return (
-    <PokemonContext.Provider value={{ pokeName}}>
+    <PokemonContext.Provider value={{ pokeName, pokeId}}>
       {children}
     </PokemonContext.Provider>
   );
