@@ -3,42 +3,38 @@ import pokeapi from "../services/pokeapi";
 // import { Container } from './styles';
 
 interface IPokemon {
-  pokeName: string;
-  pokeId: number;
-  // pokePhoto: string;
+  name: string;
+  id: number;
 }
+
+interface IPokeProps {
+  pokemon: IPokemon[];
+  pokePhoto: string;
+}
+
+
 interface contextsProviderProps {
   children: ReactNode;
-
 }
 
-export const PokemonContext = createContext({} as IPokemon);
+export const PokemonContext = createContext({} as IPokeProps);
 
 export function ContextsProvider({ children }: contextsProviderProps) {
-    const [pokeName, setPokeName] = useState('');
-    const [pokeId, setPokeId] = useState(0);
+    const [pokemon, setPokemon] = useState<IPokemon[]>([]);
     const [pokePhoto, setPokePhoto] = useState('');
     
   useEffect(() => {
-    let i = 0;
     const getPokemon = async () => {
       try {
         const { data } = await pokeapi.get(`pokemon?limit=150`);
-        setPokeName(data.results);
-        // console.log(data.results);
-        // setPokeId(data.id);
-        // setPokePhoto(data.sprites.front_default)
+        setPokemon(data.results);
       } catch (error) {}
     };
-    // for (i = 1; i < 150; i++) {
-    //   getPokemon(i);
-    // //   console.log(i)
-    // }
     getPokemon()
   }, []);
 
   return (
-    <PokemonContext.Provider value={{ pokeName, pokeId}}>
+    <PokemonContext.Provider value={{ pokemon, pokePhoto}}>
       {children}
     </PokemonContext.Provider>
   );

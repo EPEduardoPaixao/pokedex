@@ -9,7 +9,7 @@ interface IPokeCard{
     name:string;
     // photo:string;
 }
-const{pokeId, pokeName,} = useContext(PokemonContext)
+// const{pokemon} = useContext(PokemonContext)
 
 const PokeCard: React.FC<IPokeCard> = ({
     id,

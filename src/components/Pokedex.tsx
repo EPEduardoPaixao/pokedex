@@ -1,11 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
+import { PokemonContext } from "../contexts/PokeContext";
 import pokeapi from "../services/pokeapi";
 
 import "../styles/global.css";
-interface IPokemon {
-  name: string;
-  // id: string;
-}
 
 interface IMoves {
   move: {
@@ -18,40 +15,18 @@ interface ITypes {
   };
 }
 
-// interface IMoveTypes{
-//   move: {
-//     name: string;
-//   },
-//   type: {
-//     name: string;
-//   },
-// }
-const Pokedex: React.FC = () => {
-  const [pokemon, setPokemon] = useState<IPokemon[]>([]);
+
+const Pokedex = () => {
+  const{ pokemon } = useContext(PokemonContext)
   const [pokeName, setPokeName] = useState("");
   const [moves, setMoves] = useState<IMoves[]>([]);
   const [types, setTypes] = useState<ITypes[]>([]);
-  // const [moveTypes, setMoveTypes] = useState<IMoveTypes[]>([]);
 
   const [modal, setModal] = useState("none");
-
-  useEffect(() => {
-    const getPokemon = async () => {
-      try {
-        const { data } = await pokeapi.get(`pokemon?limit=151`);
-        setPokemon(data.results);
-        // console.log(data.results);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getPokemon();
-  }, []);
 
   const getMovesEndType = async (name: any) => {
     try {
       const { data } = await pokeapi.get(`pokemon/${name}`);
-      // setMoveTypes([{...moveTypes, move: data.moves.move, type:data.types}]);
       setMoves(data.moves);
       setTypes(data.types);
       setPokeName(name);
@@ -59,16 +34,6 @@ const Pokedex: React.FC = () => {
       console.log(error);
     }
   };
-
-  console.log(
-    "moves",
-    moves.map((move: any) => move.move.name)
-  );
-  console.log(
-    "types",
-    types.map((type: any) => type.type.name)
-  );
-  // console.log("movetypes", moveTypes.map((type:any, moves:any) => (type.type.name, moves.move.name)));
 
   return (
     <div>
@@ -108,9 +73,9 @@ const Pokedex: React.FC = () => {
                 }}
               >
                 <img
-                  src={`https://pokeres.bastionbot.org/images/pokemon/${
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${
                     index + 1
-                  }.png`}
+                  }.svg`}
                   alt={pokemons.name}
                   style={{ maxWidth: 150 }}
                 />
