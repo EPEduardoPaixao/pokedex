@@ -5,11 +5,11 @@ import pokeapi from "../services/pokeapi";
 interface IPokemon {
   name: string;
   id: number;
+  url: string;
 }
 
 interface IPokeProps {
   pokemon: IPokemon[];
-  pokePhoto: string;
 }
 
 
@@ -21,12 +21,11 @@ export const PokemonContext = createContext({} as IPokeProps);
 
 export function ContextsProvider({ children }: contextsProviderProps) {
     const [pokemon, setPokemon] = useState<IPokemon[]>([]);
-    const [pokePhoto, setPokePhoto] = useState('');
     
   useEffect(() => {
     const getPokemon = async () => {
       try {
-        const { data } = await pokeapi.get(`pokemon?limit=150`);
+        const { data } = await pokeapi.get(`pokemon?limit=600`);
         setPokemon(data.results);
       } catch (error) {}
     };
@@ -34,7 +33,7 @@ export function ContextsProvider({ children }: contextsProviderProps) {
   }, []);
 
   return (
-    <PokemonContext.Provider value={{ pokemon, pokePhoto}}>
+    <PokemonContext.Provider value={{ pokemon}}>
       {children}
     </PokemonContext.Provider>
   );
