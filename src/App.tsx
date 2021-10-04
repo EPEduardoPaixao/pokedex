@@ -1,5 +1,5 @@
 import React from "react";
-import Pokedex from "./components/Pokedex";
+import Pokedex from "./pages/Pokedex";
 import { ContextsProvider } from "./contexts/PokeContext";
 // import logo from './logo.svg';
 // import './styles/gobal.css';

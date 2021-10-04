@@ -1,11 +1,9 @@
 import { useEffect, useState, createContext, ReactNode } from "react";
-import pokeapi from "../services/pokeapi";
+import {pokeapi} from "../services/pokeapi";
 // import { Container } from './styles';
 
 interface IPokemon {
   name: string;
-  id: number;
-  url: string;
 }
 
 interface IPokeProps {
@@ -25,7 +23,7 @@ export function ContextsProvider({ children }: contextsProviderProps) {
   useEffect(() => {
     const getPokemon = async () => {
       try {
-        const { data } = await pokeapi.get(`pokemon?limit=600`);
+        const { data } = await pokeapi.get(`pokemon?limit=151`);
         setPokemon(data.results);
       } catch (error) {}
     };

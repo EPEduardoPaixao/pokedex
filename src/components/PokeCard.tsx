@@ -1,40 +1,51 @@
-import React, { useContext, useEffect } from 'react';
-import { PokemonContext } from '../contexts/PokeContext';
-import pokeapi from '../services/pokeapi';
+import { useEffect, useState } from "react";
+import { pokeapi } from "../services/pokeapi";
+import PokeImg from "./PokeImg";
+import PokeModal from "./PokeModal";
 
-// import { Container } from './styles';
-
-interface IPokeCard{
-    id:number;
-    name:string;
-    // photo:string;
+interface IPokeCard {
+  name: string;
+  index: number;
+  // photo:string;
 }
-// const{pokemon} = useContext(PokemonContext)
 
-const PokeCard: React.FC<IPokeCard> = ({
-    id,
-    name,
-    // photo
-}) => {
-
-    // useEffect(() => {
-    //     let i = 0;
-    //     const getPokemon = async (name: any) => {
-    //       try {
-    //         const { data } = await pokeapi.get(`pokemon/${name}`);
-    //         setPokeName(data.name);
-
-    //       } catch (error) {}
-    //     };
-    //   }, []);
+const PokeCard = ({ name, index }: IPokeCard) => {
+  const [modal, setModal] = useState("none");
 
   return (
-    <div>
-        <strong>{name}</strong>
-        {/* <img src={photo} alt={name}/> */}
-
-    </div>
-    );
-}
+    <>
+      <div
+        style={{
+          margin: 10,
+          padding: 10,
+          backgroundColor: "#fff",
+          borderRadius: 8,
+          boxShadow: "0 0 10px #bbb",
+          cursor: "pointer",
+          display: "flex",
+          flexDirection: "column",
+        }}
+        onClick={() => {
+          setModal("flex");
+        }}
+      >
+        <strong style={{ color: "#999" }}>#{index}</strong>
+        <div
+          style={{
+            height: 250,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-around",
+            alignItems: "center",
+          }}
+        >
+          <PokeImg name={name} index={index} style={{ maxWidth: 150 }} />
+          <strong>{name}</strong>
+        </div>
+      </div>
+      <PokeModal modal={modal} name={name} setModal={setModal} index={index} />
+    </>
+  );
+};
 
 export default PokeCard;
