@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { pokeapi } from "../services/pokeapi";
+import { useState } from "react";
 import PokeImg from "./PokeImg";
 import PokeModal from "./PokeModal";
 

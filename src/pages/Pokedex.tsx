@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { PokemonContext } from "../contexts/PokeContext";
 
 import "../styles/global.css";
@@ -6,6 +6,13 @@ import PokeCard from "../components/PokeCard";
 
 const Pokedex = () => {
   const{ pokemon } = useContext(PokemonContext)
+  //pseudo função para buscar nomes em um array de objetos
+  pokemon.findIndex(
+    (poke) =>
+      poke.name !== "teste" &&
+      poke.name !== "ivysaur" &&
+      poke.name !== "venusaur"
+  )?alert('achei'):alert('não achei')
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>Pokedex</h1>

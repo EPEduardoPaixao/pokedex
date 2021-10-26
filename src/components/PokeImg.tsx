@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-
 interface IPokeImg{
     name?:string;
     index?:number;
