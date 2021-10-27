@@ -7,12 +7,16 @@ import PokeCard from "../components/PokeCard";
 const Pokedex = () => {
   const{ pokemon } = useContext(PokemonContext)
   //pseudo função para buscar nomes em um array de objetos
-  pokemon.findIndex(
-    (poke) =>
+  const teste =()=>{
+
+    pokemon.findIndex(
+      (poke) =>
       poke.name !== "teste" &&
       poke.name !== "ivysaur" &&
       poke.name !== "venusaur"
-  )?alert('achei'):alert('não achei')
+      )?alert('achei'):alert('não achei')
+    }
+    teste();
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>Pokedex</h1>
