@@ -3,20 +3,15 @@ import { PokemonContext } from "../contexts/PokeContext";
 
 import "../styles/global.css";
 import PokeCard from "../components/PokeCard";
+import pokemonJson from './pokemon.json';
+
 
 const Pokedex = () => {
   const{ pokemon } = useContext(PokemonContext)
-  //pseudo função para buscar nomes em um array de objetos
-  const teste =()=>{
 
-    pokemon.findIndex(
-      (poke) =>
-      poke.name !== "teste" &&
-      poke.name !== "ivysaur" &&
-      poke.name !== "venusaur"
-      )?alert('achei'):alert('não achei')
-    }
-    teste();
+  // teste com json local utilizando nomes locais
+  // const pokemon = pokemonJson
+
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>Pokedex</h1>
