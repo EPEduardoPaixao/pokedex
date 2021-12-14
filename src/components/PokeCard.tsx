@@ -5,7 +5,6 @@ import PokeModal from "./PokeModal";
 interface IPokeCard {
   name: string;
   index: number;
-  // photo:string;
 }
 
 const PokeCard = ({ name, index }: IPokeCard) => {

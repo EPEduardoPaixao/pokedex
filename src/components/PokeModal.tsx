@@ -36,7 +36,7 @@ const PokeModal = ({ name, modal, setModal, index }: IProps) => {
       }
     };
     getMovesEndType();
-  }, []);
+  }, [name]);
   return (
     <div
       style={{

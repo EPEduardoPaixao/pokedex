@@ -1,0 +1,9 @@
+.mostrarMais{
+    background-color: none;
+    border: none;
+
+    margin: 10px;
+}
+.mostrarMais:hover{
+    color: blue;
+}
