@@ -1,6 +1,6 @@
-import { useEffect, useState, createContext, ReactNode } from "react";
+import { useState, createContext, ReactNode } from "react";
 import { pokeapi } from "../services/pokeapi";
-// import { Container } from './styles';
+import { useQuery } from "react-query";
 
 interface IPokemon {
   name: string;
@@ -23,24 +23,20 @@ export function ContextsProvider({ children }: contextsProviderProps) {
   const [pokemon, setPokemon] = useState<IPokemon[]>([]);
   const [limit, setLimit] = useState(10);
 
-  useEffect(() => {
-    const getPokemon = async () => {
-      try {
-        const { data } = await pokeapi.get(`pokemon?limit=151`);
-        data.results.map((pokeData: IPokemon) =>
-          setPokemon((pokemon) => [
-            ...pokemon,
-            {
-              name: pokeData.name,
-            },
-          ])
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getPokemon();
-  }, []);
+  const { isLoading, error } = useQuery("pokeList", async () => {
+    const { data } = await pokeapi.get(`pokemon?limit=151`);
+    data.results.map((pokeData: IPokemon) =>
+      setPokemon((pokemon) => [
+        ...pokemon,
+        {
+          name: pokeData.name,
+        },
+      ])
+    );
+    error&&alert(error)
+    isLoading && console.log("Carregando...");
+  });
+
   const getPokemon = async () => {
     try {
       const { data } = await pokeapi.get(

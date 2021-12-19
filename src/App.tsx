@@ -1,15 +1,17 @@
 import React from "react";
 import Pokedex from "./pages/Pokedex";
 import { ContextsProvider } from "./contexts/PokeContext";
-// import logo from './logo.svg';
-// import './styles/gobal.css';
-
+import { QueryClient, QueryClientProvider } from "react-query";
 function App() {
+
+  const queryClient = new QueryClient()
   return (
     <div>
-      <ContextsProvider>
-        <Pokedex />
-      </ContextsProvider>
+      <QueryClientProvider client={queryClient}>
+        <ContextsProvider>
+          <Pokedex />
+        </ContextsProvider>
+      </QueryClientProvider>
     </div>
   );
 }
